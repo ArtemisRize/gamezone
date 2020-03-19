@@ -18,8 +18,8 @@ const screens = {
     },
     ReviewDetails:{
         screen: ReviewDetails,
-        navigationOptions:{
-            title: 'Review Details'
+        navigationOptions: {
+            title: 'Review Details',
         }
     }
 }

@@ -13,12 +13,13 @@ const getFonts = () =>  Font.loadAsync({
 
 const store = configureStore()
 store.subscribe(() => {
-  console.log(store.getState())
+  let state = store.getState()
+  console.log(state.reviews)
 }) 
 store.dispatch(setGames([
-  { title: 'Zelda, Breath of Fresh Air', rating: 5, body: 'lorem ipsum', key: '1' },
-  { title: 'Gotta Catch Them All (again)', rating: 4, body: 'lorem ipsum', key: '2' },
-  { title: 'Not So "Final" Fantasy', rating: 3, body: 'lorem ipsum', key: '3' },
+  { title: 'Zelda, Breath of Fresh Air', rating: '5', body: 'lorem ipsum', key: '1' },
+  { title: 'Gotta Catch Them All (again)', rating: '4', body: 'lorem ipsum', key: '2' },
+  { title: 'Not So "Final" Fantasy', rating: '4', body: 'lorem ipsum', key: '3' },
 ]))
 
 export default function App() {

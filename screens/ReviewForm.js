@@ -4,9 +4,9 @@ import {globalStyles} from '../styles/global'
 import {Formik} from 'formik'
 import FlatButton from '../shared/button'
 import * as yup from 'yup'
-import {addReview} from '../actions/gameActions'
 import {setModalOpen} from '../actions/modalActions'
 import {connect} from 'react-redux'
+import uuid from 'react-native-uuid';
 
 const ReviewSchema = yup.object({
     title: yup.string()
@@ -22,20 +22,21 @@ const ReviewSchema = yup.object({
         })
 })
 
-const ReviewForm = ({addReview, setModalOpen}) => {
-
+const ReviewForm = ({setModalOpen, review, onSubmit, navigation}) => {
     return (
         <View style={globalStyles.container}>
             <Formik
                 initialValues={{
-                    title: '',
-                    body: '',
-                    rating: ''
+                    body: review.body ? review.body: '',
+                    rating: review.rating ? review.rating: '',
+                    title: review.title ? review.title: '',
+                    key: review.key ? review.key: uuid.v1()
                 }}
                 validationSchema={ReviewSchema}
                 onSubmit={(values, actions) => {
                     actions.resetForm()
-                    addReview(values)
+                    onSubmit(values)
+                    navigation.navigate('Home')
                     setModalOpen(false)
                 }}
             >
@@ -48,6 +49,7 @@ const ReviewForm = ({addReview, setModalOpen}) => {
                                 onChangeText={props.handleChange('title')}
                                 value={props.touched.title && props.values.title}
                                 onBlur={props.handleBlur('title')}
+                                value={props.values.title}
                             />
                             <Text style={globalStyles.errorText}>
                                 {props.errors.title}
@@ -86,10 +88,12 @@ const ReviewForm = ({addReview, setModalOpen}) => {
         </View>
     )
 }
+const mapStateToProps = (state) => ({
+    review: state.modal.review
+})
 
 const mapDispatchToProps = (dispatch) => ({
-    addReview: (review) => dispatch(addReview(review)),
     setModalOpen: (bool) => dispatch(setModalOpen(bool))
 })
 
-export default connect(undefined,mapDispatchToProps)(ReviewForm)
+export default connect(mapStateToProps,mapDispatchToProps)(ReviewForm)
